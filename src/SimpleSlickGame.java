@@ -43,6 +43,11 @@ public class SimpleSlickGame extends BasicGame
         //for (int i = 0; i < 100; i++) {
             //map.add(new MapFragment(i*32+50f, 520f));
         //}
+        gc.setVSync(true);
+        gc.setMaximumLogicUpdateInterval(10);
+        gc.setTargetFrameRate(60);
+
+
     }
 
     @Override
@@ -51,7 +56,7 @@ public class SimpleSlickGame extends BasicGame
 
         handleInput(gc);
         updatePositions();
-        refresh(10);
+
     }
 
     private void handleInput(GameContainer gc) {
@@ -70,11 +75,8 @@ public class SimpleSlickGame extends BasicGame
 
         if(player.speedx>0) {
             for (MapFragment block : map) {
-                //if(isCollidingWithLeft(player, block)) {
-                if(player.posx+player.sizex>=block.posx) {
+                if(isCollidingWithLeft(player, block)) {
                     player.posx = block.posx - player.sizex;
-                } else {
-                    player.posx += player.speedx;
                 }
             }
         }
@@ -82,10 +84,12 @@ public class SimpleSlickGame extends BasicGame
             for (MapFragment block : map) {
                 if(isCollidingWithRight(player, block)) {
                     player.posx = block.posx + block.sizex;
-                } else {
-                    player.posx += player.speedx;
                 }
             }
+        }
+
+        if(not collided) {
+            player.posx += player.speedx;
         }
 
 
@@ -94,47 +98,41 @@ public class SimpleSlickGame extends BasicGame
 
     //is collider colliding with top of the destination, for example player jumping on top of block
     private boolean isCollidingWithTop(Creature collider, GameObject destination) {
-        if(collider.getBottom()+collider.speedy>=destination.getTop() && collider.getBottom()<=destination.getTop()) {
+        if(collider.getBottom()+collider.speedy>destination.getTop() && collider.getBottom()<=destination.getTop()) {
             if(collider.getRight()>destination.getLeft() && destination.getLeft()>collider.getLeft() || collider.getRight()>destination.getRight() && destination.getRight()>collider.getLeft()) {
-
+                return true;
             }
         }
         return false;
     }
 
     private boolean isCollidingWithBottom(Creature collider, GameObject destination){
-        if(collider.getTop()>=destination.getBottom() && collider.getTop()+collider.speedy<=destination.getBottom()) {
+        if(collider.getTop()>=destination.getBottom() && collider.getTop()+collider.speedy<destination.getBottom()) {
             if(collider.getRight()>destination.getLeft() && destination.getLeft()>collider.getLeft() || collider.getRight()>destination.getRight() && destination.getRight()>collider.getLeft()) {
-
+                return true;
             }
         }
         return false;
     }
 
     private boolean isCollidingWithRight(Creature collider, GameObject destination) {
-        if(collider.getLeft()>=destination.getRight() && collider.getLeft()+collider.speedx<=destination.getRight()){
-            //if(collider.getBottom()>destination.getTop() && destination.getTop()>collider.getTop() || collider.getBottom()>destination.getBottom() && destination.getBottom()>collider.getTop())
+        if(collider.getLeft()>=destination.getRight() && collider.getLeft()+collider.speedx<destination.getRight()){
+            if(collider.getBottom()>destination.getTop() && destination.getTop()>collider.getTop() || collider.getBottom()>destination.getBottom() && destination.getBottom()>collider.getTop()) {
                 return true;
+            }
         }
         return false;
     }
 
     private boolean isCollidingWithLeft(Creature collider, GameObject destination) {
-        if(collider.getRight()+collider.speedx>=destination.getLeft() && collider.getRight()<=destination.getLeft()){
-            //if(collider.getBottom()>destination.getTop() && destination.getTop()>collider.getTop() || collider.getBottom()>destination.getBottom() && destination.getBottom()>collider.getTop())
-            return true;
+        if(collider.getRight()+collider.speedx>destination.getLeft() && collider.getRight()<=destination.getLeft()){
+            if(collider.getBottom()>destination.getTop() && destination.getTop()>collider.getTop() || collider.getBottom()>destination.getBottom() && destination.getBottom()>collider.getTop()) {
+                return true;
+            }
+
         }
         return false;
 
-    }
-
-
-    private void refresh(int time) {
-        try {
-            sleep(time);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -145,9 +143,9 @@ public class SimpleSlickGame extends BasicGame
         //drawMap();
         //drawCreatures();
 
-        player.defaultImage.draw(player.posx, player.posy);
+        player.defaultImage.draw(300, 300);
         for (MapFragment block : map) {
-            block.defaultImage.draw(block.posx, block.posy);
+            block.defaultImage.draw(block.posx-player.posx+300, block.posy-player.posy+300);
         }
 
         g.drawString(Float.toString(player.speedx), 100, 100);
