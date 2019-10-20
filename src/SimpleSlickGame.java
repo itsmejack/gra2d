@@ -39,11 +39,12 @@ public class SimpleSlickGame extends BasicGame
 
         map = new ArrayList<>();
         map.add(new MapFragment(1400f, 320f));
-        //map.add(new MapFragment(100f, 320f));
+        map.add(new MapFragment(100f, 320f));
 
-        //for (int i = 0; i < 100; i++) {
-            //map.add(new MapFragment(i*32+50f, 520f));
-        //}
+        for (int i = 0; i < 100; i++) {
+            map.add(new MapFragment(i*32+50f, 520f));
+            map.add(new MapFragment(i*32+50f, 120f));
+        }
         gc.setVSync(true);
         gc.setMaximumLogicUpdateInterval(10);
         gc.setTargetFrameRate(60);
@@ -54,7 +55,6 @@ public class SimpleSlickGame extends BasicGame
     @Override
     public void update(GameContainer gc, int i) throws SlickException {
 
-
         handleInput(gc);
         updatePositions();
 
@@ -62,37 +62,76 @@ public class SimpleSlickGame extends BasicGame
 
     private void handleInput(GameContainer gc) {
         if(gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
-            player.speedx = 1f;
+            player.speedx+=1f;
         } else if(gc.getInput().isKeyDown(Input.KEY_LEFT)) {
-            player.speedx = -0.1f;
+            player.speedx-=1f;
         } else {
-            player.speedx = 0;
+            player.speedx-=Math.signum(player.speedx)*1;
+        }
+
+        if(gc.getInput().isKeyDown(Input.KEY_UP)) {
+            player.speedy-=1f;
+        } else {
+            player.speedy+=1f;
         }
 
 
     }
 
     private void updatePositions() {
+        boolean isCollided = false;
+        float newpos = player.posx+player.speedx;
 
         if(player.speedx>0) {
             for (MapFragment block : map) {
                 if(isCollidingWithLeft(player, block)) {
-                    player.posx = block.posx - player.sizex;
+                    newpos = Math.min(newpos, block.posx - player.sizex);
+                    isCollided = true;
                 }
             }
         }
         else if (player.speedx<0) {
             for (MapFragment block : map) {
                 if(isCollidingWithRight(player, block)) {
-                    player.posx = block.posx + block.sizex;
+                    newpos = Math.max(newpos, block.posx + block.sizex);
+                    isCollided = true;
                 }
             }
         }
 
-        if(not collided) {
+        if(!isCollided) {
             player.posx += player.speedx;
+        } else {
+            player.speedx = 0f;
+            player.posx = newpos;
         }
 
+        isCollided = false;
+        newpos = player.posy+player.speedy;
+
+        if(player.speedy>0) {
+            for (MapFragment block : map) {
+                if(isCollidingWithTop(player, block)) {
+                    newpos = Math.min(newpos, block.posy - player.sizey);
+                    isCollided = true;
+                }
+            }
+        }
+        else if (player.speedy<0) {
+            for (MapFragment block : map) {
+                if(isCollidingWithBottom(player, block)) {
+                    newpos = Math.max(newpos, block.posy + block.sizey);
+                    isCollided = true;
+                }
+            }
+        }
+
+        if(!isCollided) {
+            player.posy += player.speedy;
+        } else {
+            player.speedy = 0f;
+            player.posy = newpos;
+        }
 
 
     }
@@ -144,9 +183,12 @@ public class SimpleSlickGame extends BasicGame
         //drawMap();
         //drawCreatures();
 
-        player.defaultImage.draw(300, 300);
+        float camerax = 960f - player.sizex/2;
+        float cameray = 540f - player.sizey/2;
+
+        player.defaultImage.draw(camerax, cameray);
         for (MapFragment block : map) {
-            block.defaultImage.draw(block.posx-player.posx+300, block.posy-player.posy+300);
+            block.defaultImage.draw(block.posx-player.posx+camerax, block.posy-player.posy+cameray);
         }
 
         g.drawString(Float.toString(player.speedx), 100, 100);
