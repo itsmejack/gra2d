@@ -5,7 +5,7 @@ public abstract class GameObject {
     public float posy;
     public float sizex;
     public float sizey;
-    public Image defaultImage;
+    //public Image defaultImage;
 
     public float getLeft() {
         return posx;

@@ -8,8 +8,7 @@ import org.newdawn.slick.*;
 
 public class SimpleSlickGame extends BasicGame
 {
-    public SimpleSlickGame(String gamename)
-    {
+    public SimpleSlickGame(String gamename) {
         super(gamename);
     }
 
@@ -25,18 +24,9 @@ public class SimpleSlickGame extends BasicGame
         player = new Player();
         player.posx = 200f;
         player.posy = 300f;
-        player.sizex = 64f;//32f;
-        player.sizey = 128f;//64f;
-        player.speedx = 0f;
-        player.speedy = 0f;
-        player.defaultImage = new Image("C:\\Users\\Student236794\\Desktop\\testbody1080p.png");
-
         map = new Map();
 
         for (int i = 0; i < 100; i++) {
-            //map.add(new MapFragment(i*32+50f, 620f));
-            //map.add(new MapFragment(i*32+50f, 120f));
-
             map.add(new MapFragment(i*64f, 16*64f));
             map.add(new MapFragment(i*64f, 2*64f));
             map.add(new MapFragment(i*64f, 320+i*64f));
@@ -50,23 +40,25 @@ public class SimpleSlickGame extends BasicGame
     }
 
     @Override
-    public void update(GameContainer gc, int i) throws SlickException {
+    public void update(GameContainer gc, int i) {
         handleInput(gc);
-        updatePositions();
+        updatePositionsAndSpeedAndStates();
     }
 
-    private void handleInput(GameContainer gc) throws SlickException {
+    private void addRestartHandler(GameContainer gc) {
         if(gc.getInput().isKeyPressed(Input.KEY_R)) {
             player.posx = 200f;
             player.posy = 300f;
         }
+    }
 
+    private void addXMovementHandler(GameContainer gc) {
         if(gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
-            player.defaultImage = new Image("C:\\Users\\Student236794\\Desktop\\walkr.png");
+            player.isHeadingRight = true;
             player.speedx+=1f;
             player.speedx=Math.min(player.speedx, maxSpeed);
         } else if(gc.getInput().isKeyDown(Input.KEY_LEFT)) {
-            player.defaultImage = new Image("C:\\Users\\Student236794\\Desktop\\walkl.png");
+            player.isHeadingRight = false;
             player.speedx-=1f;
             player.speedx=Math.max(player.speedx, -maxSpeed);
         } else {
@@ -75,90 +67,76 @@ public class SimpleSlickGame extends BasicGame
                 player.speedx = 0f;
             }
         }
+    }
 
-        if(player.speedy!=0f) {
-            if(player.speedx>=0) {
-                player.defaultImage = new Image("C:\\Users\\Student236794\\Desktop\\jumpr.png");
-            } else {
-                player.defaultImage = new Image("C:\\Users\\Student236794\\Desktop\\jumpl.png");
-            }
-        } else {
-            if(player.speedx>=0) {
-                player.defaultImage = new Image("C:\\Users\\Student236794\\Desktop\\walkr.png");
-            } else {
-                player.defaultImage = new Image("C:\\Users\\Student236794\\Desktop\\walkl.png");
-            }
-        }
-
+    private void addYMovementHandler(GameContainer gc) {
         if(gc.getInput().isKeyPressed(Input.KEY_UP) && player.speedy==0f) {
             player.speedy=-25f;
         } else {
             player.speedy+=1f;
             player.speedy=Math.min(player.speedy, maxSpeed);
         }
-
-
-
     }
 
-    private void updatePositions() {
-        boolean isCollided = false;
-        float newpos = player.posx+player.speedx;
-        MapFragment block = null;
+    private void handleInput(GameContainer gc){
+        addRestartHandler(gc);
+        addXMovementHandler(gc);
+        addYMovementHandler(gc);
+        player.updateState();
+    }
 
+    private void updateXPosAndSpeed() {
+        MapFragment block;
         if(player.speedx>0) {
             block = map.isCollidingWithLeft(player);
             if(block!=null) {
-                newpos = Math.min(newpos, block.posx - player.sizex);
-                isCollided = true;
+                player.posx = Math.min(player.posx+player.speedx, block.posx - player.sizex);
+                player.speedx = 0f;
             }
         }
         else if (player.speedx<0) {
             block = map.isCollidingWithRight(player);
             if(block!=null) {
-                newpos = Math.max(newpos, block.posx + block.sizex);
-                isCollided = true;
+                player.posx = Math.max(player.posx+player.speedx, block.posx + block.sizex);
+                player.speedx = 0f;
             }
         }
+        player.posx += player.speedx;
+    }
 
-        if(!isCollided) {
-            player.posx += player.speedx;
-        } else {
-            player.speedx = 0f;
-            player.posx = newpos;
-        }
-
-        isCollided = false;
-        newpos = player.posy+player.speedy;
+    private void updateYPosAndSpeed() {
+        MapFragment block = null;
 
         if(player.speedy>0) {
             block = map.isCollidingWithTop(player);
             if(block!=null) {
-                newpos = Math.min(newpos, block.posy - player.sizey);
-                isCollided = true;
+                player.posy = Math.min(player.posy+player.speedy, block.posy - player.sizey);
+                player.speedy = 0f;
             }
         }
         else if (player.speedy<0) {
             block = map.isCollidingWithBottom(player);
             if(block!=null) {
-                newpos = Math.max(newpos, block.posy + block.sizey);
-                isCollided = true;
-            }
-        }
-
-        if(!isCollided) {
-            player.posy += player.speedy;
-        } else {
-            if(player.speedy<0) {
+                player.posy = Math.max(player.posy+player.speedy, block.posy + block.sizey);
                 player.speedy = -player.speedy;
-            } else {
-                player.speedy = 0f;
             }
-            player.posy = newpos;
         }
 
+        if(block==null) {
+            player.posy += player.speedy;
+        }
+    }
 
+    private void updatePlayerStates() {
+        player.isWalking = (player.speedx != 0f);
+        player.isFlying = (player.speedy != 0f);
+    }
 
+    private void updatePositionsAndSpeedAndStates() {
+        updateXPosAndSpeed();
+        updateYPosAndSpeed();
+        updatePlayerStates();
+        player.updateState();
     }
 
 
@@ -180,16 +158,13 @@ public class SimpleSlickGame extends BasicGame
         //g.scale(gc.getScreenWidth()/1920f,gc.getScreenHeight()/1080f); << this final
         g.scale(1920/1920f,1080/1080f);
         g.setBackground(new Color(255,255,255));
-
         float camerax = 960f - player.sizex/2;
         float cameray = 540f - player.sizey/2;
 
-        player.defaultImage.draw(camerax, cameray);
+        player.animation.draw(camerax, cameray);
         for (MapFragment block : map.getFragments()) {
-            block.defaultImage.draw(block.posx-player.posx+camerax, block.posy-player.posy+cameray);
+            block.image.draw(block.posx-player.posx+camerax, block.posy-player.posy+cameray);
         }
-
-        drawPos(g);
     }
 
     public static void main(String[] args)
