@@ -22,16 +22,19 @@ public class SimpleSlickGame extends BasicGame
     @Override
     public void init(GameContainer gc) throws SlickException {
         player = new Player();
-        player.posx = 200f;
-        player.posy = 300f;
         map = new Map();
+        player.posx = 0f;
+        player.posy = map.generateNewMap(1000, 100)*32f;
+        map.generateMap(100,20);
+
 
         for (int i = 0; i < 100; i++) {
             map.add(new MapFragment(i*64f, 16*64f));
-            map.add(new MapFragment(i*64f, 2*64f));
-            map.add(new MapFragment(i*64f, 320+i*64f));
+            //map.add(new MapFragment(i*64f, 2*64f));
+            //map.add(new MapFragment(i*64f, 320+i*64f));
             map.add(new MapFragment(i*64f, 100*64f));
         }
+
         gc.setVSync(true);
         gc.setMaximumLogicUpdateInterval(10);
         gc.setTargetFrameRate(60);
@@ -155,12 +158,14 @@ public class SimpleSlickGame extends BasicGame
         //drawMap();
         //drawCreatures();
 
-        //g.scale(gc.getScreenWidth()/1920f,gc.getScreenHeight()/1080f); << this final
+        //g.scale(gc.getScreenWidth()/1920f,gc.getScreenHeight()/1080f); //<< this final
         g.scale(1920/1920f,1080/1080f);
         g.setBackground(new Color(255,255,255));
         float camerax = 960f - player.sizex/2;
         float cameray = 540f - player.sizey/2;
 
+        Image backk = new Image("C:\\Users\\Student236794\\Desktop\\backk.png");
+        backk.draw((-player.posx+camerax)/10, (-player.posy+cameray)/10);
         player.animation.draw(camerax, cameray);
         for (MapFragment block : map.getFragments()) {
             block.image.draw(block.posx-player.posx+camerax, block.posy-player.posy+cameray);
@@ -174,7 +179,7 @@ public class SimpleSlickGame extends BasicGame
             AppGameContainer appgc;
             appgc = new AppGameContainer(new SimpleSlickGame("SUPER GIERA HEHEH"));
             appgc.setDisplayMode(1920,1080, false); //for me only xd
-            //appgc.setDisplayMode(appgc.getScreenWidth(),appgc.getScreenHeight(), true); <<this final
+            //appgc.setDisplayMode(appgc.getScreenWidth(),appgc.getScreenHeight(), true); //<<this final
             appgc.start();
         }
         catch (SlickException ex)
