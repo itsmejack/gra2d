@@ -24,8 +24,8 @@ public class SimpleSlickGame extends BasicGame
         player = new Player();
         map = new Map();
         player.posx = 0f;
-        player.posy = map.generateNewMap(1000, 100)*32f;
-        map.generateMap(100,20);
+        //player.posy = map.generateNewMap(1000, 100)*32f;
+        map.generateMap(200,15);
 
 
         for (int i = 0; i < 100; i++) {
@@ -93,15 +93,15 @@ public class SimpleSlickGame extends BasicGame
         if(player.speedx>0) {
             block = map.isCollidingWithLeft(player);
             if(block!=null) {
-                player.posx = Math.min(player.posx+player.speedx, block.posx - player.sizex);
-                player.speedx = 0f;
+                //player.posx = Math.min(player.posx+player.speedx, block.posx - player.sizex);
+                //player.speedx = 0f;
             }
         }
         else if (player.speedx<0) {
             block = map.isCollidingWithRight(player);
             if(block!=null) {
-                player.posx = Math.max(player.posx+player.speedx, block.posx + block.sizex);
-                player.speedx = 0f;
+                //player.posx = Math.max(player.posx+player.speedx, block.posx + block.sizex);
+                //player.speedx = 0f;
             }
         }
         player.posx += player.speedx;
@@ -118,11 +118,11 @@ public class SimpleSlickGame extends BasicGame
             }
         }
         else if (player.speedy<0) {
-            block = map.isCollidingWithBottom(player);
-            if(block!=null) {
-                player.posy = Math.max(player.posy+player.speedy, block.posy + block.sizey);
-                player.speedy = -player.speedy;
-            }
+            //block = map.isCollidingWithBottom(player);
+            //if(block!=null) {
+                //player.posy = Math.max(player.posy+player.speedy, block.posy + block.sizey);
+                //player.speedy = -player.speedy;
+            //}
         }
 
         if(block==null) {
@@ -164,12 +164,18 @@ public class SimpleSlickGame extends BasicGame
         float camerax = 960f - player.sizex/2;
         float cameray = 540f - player.sizey/2;
 
-        Image backk = new Image("C:\\Users\\Student236794\\Desktop\\backk.png");
-        backk.draw((-player.posx+camerax)/10, (-player.posy+cameray)/10);
-        player.animation.draw(camerax, cameray);
+        Image back2 = new Image("C:\\Users\\Student236794\\Desktop\\bak2.png");
+        Image back3 = new Image("C:\\Users\\Student236794\\Desktop\\bak3.png");
+        Image backg = new Image("C:\\Users\\Student236794\\Desktop\\backg.png");
+        backg.draw((-player.posx+camerax)/10, (-player.posy+cameray)/20);
+        backg.draw((-player.posx+camerax)/10+3840, (-player.posy+cameray)/20);
+        back3.draw((-player.posx+camerax)/8, (-player.posy+cameray)/18);
+        back2.draw((-player.posx+camerax)/6, (-player.posy+cameray)/16);
+
         for (MapFragment block : map.getFragments()) {
             block.image.draw(block.posx-player.posx+camerax, block.posy-player.posy+cameray);
         }
+        player.animation.draw(camerax, cameray);
     }
 
     public static void main(String[] args)

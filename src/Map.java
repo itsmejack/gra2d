@@ -129,7 +129,7 @@ public class Map {
         return 0f;
     }
 
-    public void generateMap(int x, int y) {
+    public void generateMap(int x, int y) throws SlickException {
         int temp[][] = new int[x][y];
         Random generator = new Random();
 
@@ -156,8 +156,9 @@ public class Map {
             //prawdopodobnie tutaj juz trzeba chunk stworzyc
         }
 
+        /*
         //additional routes
-        for(int k=0; k<10; k++) {
+        for(int k=0; k<4; k++) {
             //wylosuj jakis x
             //wylosuj czy ma byc na gorze czy na dole
             //znajdz odpowiednie y jesli mozliwe
@@ -227,7 +228,23 @@ public class Map {
                 }
                 currentY = (isOverMainRoute?currentY+1:currentY-1);
             }
+        }*/
+
+        for(currentX=1; currentX<x-1; currentX++) {
+            for(currentY=1; currentY<y-1; currentY++) {
+                if(temp[currentX][currentY] != 0) {
+                    MapChunk tempChunk = new MapChunk(
+                            (temp[currentX][currentY - 1] != 0),
+                            (temp[currentX][currentY + 1] != 0),
+                            (temp[currentX - 1][currentY] != 0),
+                            (temp[currentX + 1][currentY] != 0),
+                            currentX*64f*10,
+                            currentY*64f*10);
+                    map.addAll(tempChunk.getMapFragments());
+                }
+            }
         }
+
     }
 
 
