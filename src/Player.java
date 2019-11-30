@@ -6,13 +6,9 @@ public class Player  extends Creature {
 
     public Animation[] standAnimation = new Animation[2];
     public Animation[] walkAnimation = new Animation[2];
-    public Animation[] crouchAnimation = new Animation[2];
-    public Animation[] crabWalkAnimation = new Animation[2];
     public Animation[] flyAnimation = new Animation[2];
-    public Animation[] duckJumpAnimation = new Animation[2];
 
     public boolean isHeadingRight = true;
-    public boolean isCrouching = false;
     public boolean isFlying = false;
     public boolean isWalking = false;
 
@@ -20,12 +16,9 @@ public class Player  extends Creature {
 
         for (int i = 0; i < 2; i++) {
             String name = (i==0?"l":"r");
-            standAnimation[i] = new Animation(new SpriteSheet("C:\\Users\\Student236794\\Desktop\\stand"+ name +".png", 64,128), 300);
-            walkAnimation[i] = new Animation(new SpriteSheet("C:\\Users\\Student236794\\Desktop\\walkr"+ name +".png", 64,128), 150);
-            crouchAnimation[i] = new Animation(new SpriteSheet("C:\\Users\\Student236794\\Desktop\\stand"+ name +".png", 64,128), 300);
-            crabWalkAnimation[i] = new Animation(new SpriteSheet("C:\\Users\\Student236794\\Desktop\\stand"+ name +".png", 64,128), 300);
-            flyAnimation[i] = new Animation(new SpriteSheet("C:\\Users\\Student236794\\Desktop\\jump"+ name +".png", 64,128), 300);
-            duckJumpAnimation[i] = new Animation(new SpriteSheet("C:\\Users\\Student236794\\Desktop\\stand"+ name +".png", 64,128), 300);
+            standAnimation[i] = new Animation(new SpriteSheet("src\\stand"+ name +".png", 64,128), 300);
+            walkAnimation[i] = new Animation(new SpriteSheet("src\\walkr"+ name +".png", 64,128), 150);
+            flyAnimation[i] = new Animation(new SpriteSheet("src\\jump"+ name +".png", 64,128), 300);
         }
 
         sizex = 64f;
@@ -43,18 +36,11 @@ public class Player  extends Creature {
             direction = 1;
         }
 
-        //tutaj trzeba tez ustawic wymiary gracza
-        if(isCrouching && isFlying) {
-            animation = duckJumpAnimation[direction];
-        } else if(!isCrouching && isFlying) {
+        if(isFlying) {
             animation = flyAnimation[direction];
-        } else if(isWalking && isCrouching && !isFlying) {
-            animation = crabWalkAnimation[direction];
-        } else if(isWalking && !isCrouching && !isFlying) {
+        } else if(isWalking) {
             animation = walkAnimation[direction];
-        } else if(!isWalking && isCrouching && !isFlying) {
-            animation = crouchAnimation[direction];
-        } else if(!isWalking && !isCrouching && !isFlying) {
+        }  else {
             animation = standAnimation[direction];
         }
     }

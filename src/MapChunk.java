@@ -11,21 +11,38 @@ public class MapChunk {
     private boolean downExit;
     private boolean leftExit;
     private boolean rightExit;
-    //private MapFragment[][] mapFragments;
     private List<MapFragment> mapFragments;
 
-    public MapChunk(boolean up, boolean down, boolean left, boolean right, float newX, float newY) throws SlickException {
+    private final int minPlatformLength = 1;
+    private final int maxPlatformLength = 10;
+    private final float blockSize = 64f;
+    private final int chunkSize = 10;
+
+    public MapChunk(boolean up, boolean down, boolean left, boolean right, float newX, float newY, boolean isFinish) throws SlickException {
         upExit = up;
         downExit = down;
         leftExit = left;
         rightExit = right;
         startX = newX;
         startY = newY;
-        mapFragments = generateNewChunk();
+        mapFragments = isFinish ? generateFinishChunk() : generateNewChunk();
+    }
+
+    public MapChunk(float newX, float newY, boolean isFinish) throws SlickException {
+        this(true, true, true, true, newX, newY, isFinish);
+    }
+
+
+    private List<MapFragment> generateFinishChunk() throws SlickException {
+        List<MapFragment> temp = new ArrayList<>();
+        for(int currentX=0; currentX<chunkSize; currentX++) {
+            temp.add(new MapFragment(startX + currentX*blockSize, startY + (chunkSize-1)*blockSize));
+        }
+        temp.add(new MapFragment(startX + (chunkSize-2)*blockSize, startY + (chunkSize-2)*blockSize, true));
+        return temp;
     }
 
     private List<MapFragment> generateNewChunk() throws SlickException {
-        //MapFragment[][] temp = new MapFragment[10][10];
         List<MapFragment> temp = new ArrayList<>();
 
         if(upExit) {
@@ -57,11 +74,10 @@ public class MapChunk {
 
     private List<MapFragment> generateRandomPlatform(int minX, int maxX, int minY, int maxY) throws SlickException {
         Random generator = new Random();
-        List<MapFragment> temp = new ArrayList<>();
 
-        int currentY = generator.nextInt(maxY-minY+1)+minY;
-        int rStartX = generator.nextInt(maxX-minX+1)+minX;
-        int rEndX = rStartX + generator.nextInt(10)+1;
+        int currentY = generator.nextInt(maxY-minY+minPlatformLength)+minY;
+        int rStartX = generator.nextInt(maxX-minX+minPlatformLength)+minX;
+        int rEndX = rStartX + generator.nextInt(maxPlatformLength)+minPlatformLength;
 
         return generatePlatform(rStartX, rEndX, currentY);
     }
@@ -70,10 +86,9 @@ public class MapChunk {
         List<MapFragment> temp = new ArrayList<>();
 
         for (int currentX=minX; currentX<=maxX; currentX++) {
-            temp.add(new MapFragment(startX+currentX*64f, startY+newY*64f));
+            temp.add(new MapFragment(startX+currentX*blockSize, startY+newY*blockSize));
         }
 
         return temp;
     }
-
 }
