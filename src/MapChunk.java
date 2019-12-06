@@ -15,8 +15,6 @@ public class MapChunk {
 
     private final int minPlatformLength = 1;
     private final int maxPlatformLength = 10;
-    private final float blockSize = 64f;
-    private final int chunkSize = 10;
 
     public MapChunk(boolean up, boolean down, boolean left, boolean right, float newX, float newY, boolean isFinish) throws SlickException {
         upExit = up;
@@ -35,10 +33,10 @@ public class MapChunk {
 
     private List<MapFragment> generateFinishChunk() throws SlickException {
         List<MapFragment> temp = new ArrayList<>();
-        for(int currentX=0; currentX<chunkSize; currentX++) {
-            temp.add(new MapFragment(startX + currentX*blockSize, startY + (chunkSize-1)*blockSize));
+        for(int currentX=0; currentX<GameConstants.CHUNK_SIZE; currentX++) {
+            temp.add(new MapFragment(startX + currentX*GameConstants.BLOCK_SIZE, startY + (GameConstants.CHUNK_SIZE-1)*GameConstants.BLOCK_SIZE));
         }
-        temp.add(new MapFragment(startX + (chunkSize-2)*blockSize, startY + (chunkSize-2)*blockSize, true));
+        temp.add(new MapFragment(startX + (GameConstants.CHUNK_SIZE-2)*GameConstants.BLOCK_SIZE, startY + (GameConstants.CHUNK_SIZE-2)*GameConstants.BLOCK_SIZE, true));
         return temp;
     }
 
@@ -86,7 +84,7 @@ public class MapChunk {
         List<MapFragment> temp = new ArrayList<>();
 
         for (int currentX=minX; currentX<=maxX; currentX++) {
-            temp.add(new MapFragment(startX+currentX*blockSize, startY+newY*blockSize));
+            temp.add(new MapFragment(startX+currentX*GameConstants.BLOCK_SIZE, startY+newY*GameConstants.BLOCK_SIZE));
         }
 
         return temp;

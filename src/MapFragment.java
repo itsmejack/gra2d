@@ -12,20 +12,20 @@ public class MapFragment  extends GameObject {
         Random generator = new Random();
         this.posx = posx;
         this.posy = posy;
-        this.sizex = 64f;
-        this.sizey = 64f;
+        this.sizex = GameConstants.BLOCK_SIZE;
+        this.sizey = GameConstants.BLOCK_SIZE;
         //this.image = (generator.nextBoolean()?new Image("C:\\Users\\Student236794\\Desktop\\aaa1080p.png"):new Image("C:\\Users\\Student236794\\Desktop\\bbb1080p.png"));
-        this.image = new Image("src\\aaa1080p.png");
+        this.image = generator.nextBoolean()?new Image("src\\aaa1080p.png"):new Image("src\\bbb1080p.png");
     }
 
     public MapFragment(float posx, float posy, boolean isDestinationPoint) throws SlickException {
         Random generator = new Random();
         this.posx = posx;
         this.posy = posy;
-        this.sizex = 64f;
-        this.sizey = 64f;
+        this.sizex = GameConstants.BLOCK_SIZE;
+        this.sizey = GameConstants.BLOCK_SIZE;
         //this.image = (generator.nextBoolean()?new Image("C:\\Users\\Student236794\\Desktop\\aaa1080p.png"):new Image("C:\\Users\\Student236794\\Desktop\\bbb1080p.png"));
         this.image = new Image("src\\bbb1080p.png");
-        this.isDestinationPoint = true;
+        this.isDestinationPoint = isDestinationPoint;
     }
 }

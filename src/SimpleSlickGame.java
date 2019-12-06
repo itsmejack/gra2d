@@ -14,15 +14,10 @@ public class SimpleSlickGame extends BasicGame
 
     public Player player;
     public Map map;
-    //public Enemy[] enemies; //arraylista
-    //public MapItem[] items; //arraylista
 
     private float maxSpeed = 15f;
     private int mapSizeX = 10;
     private int mapSizeY = 2;
-    private float blockSize = 64f;
-    private int chunkSize = 10;
-    private boolean isFinished = false;
     private boolean isPaused = false;
     private float startPosY;
     private String menuText = "";
@@ -31,7 +26,7 @@ public class SimpleSlickGame extends BasicGame
     public void init(GameContainer gc) throws SlickException {
         player = new Player();
         map = new Map();
-        player.posx = blockSize/2;
+        player.posx = GameConstants.BLOCK_SIZE/2;
         startPosY = map.generateMap(mapSizeX, mapSizeY);
         player.posy = startPosY;
 
@@ -60,16 +55,16 @@ public class SimpleSlickGame extends BasicGame
     }
 
     private void handleMenu(GameContainer gc) throws SlickException {
-        if(gc.getInput().isKeyPressed(Input.KEY_N)) {
+        if(gc.getInput().isKeyPressed(GameConstants.NEW_GAME_INPUT)) {
             player = new Player();
             map = new Map();
-            player.posx = blockSize/2;
+            player.posx = GameConstants.BLOCK_SIZE/2;
             startPosY = map.generateMap(mapSizeX, mapSizeY);
             player.posy = startPosY;
             isPaused = false;
-        } else if(gc.getInput().isKeyPressed(Input.KEY_R)) {
+        } else if(gc.getInput().isKeyPressed(GameConstants.RESTART_GAME_INPUT)) {
             player = new Player();
-            player.posx = blockSize/2;
+            player.posx = GameConstants.BLOCK_SIZE/2;
             player.posy = startPosY;
             map.isFinished = false;
             isPaused = false;
@@ -77,25 +72,25 @@ public class SimpleSlickGame extends BasicGame
     }
     
     private void addRestartHandler(GameContainer gc){
-        if(gc.getInput().isKeyPressed(Input.KEY_R)) {
-            player.posx = blockSize/2;
+        if(gc.getInput().isKeyPressed(GameConstants.RESTART_GAME_INPUT)) {
+            player.posx = GameConstants.BLOCK_SIZE/2;
             player.posy = startPosY;
         }
     }
 
     private boolean isDead() {
-        if(player.posy > (mapSizeY+5)*blockSize*chunkSize) {
+        if(player.posy > (mapSizeY+5)*GameConstants.BLOCK_SIZE*GameConstants.CHUNK_SIZE) {
             return true;
         }
         return false;
     }
 
     private void addXMovementHandler(GameContainer gc) {
-        if(gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
+        if(gc.getInput().isKeyDown(GameConstants.MOVE_RIGHT_INPUT)) {
             player.isHeadingRight = true;
             player.speedx+=1f;
             player.speedx=Math.min(player.speedx, maxSpeed);
-        } else if(gc.getInput().isKeyDown(Input.KEY_LEFT)) {
+        } else if(gc.getInput().isKeyDown(GameConstants.MOVE_LEFT_INPUT)) {
             player.isHeadingRight = false;
             player.speedx-=1f;
             player.speedx=Math.max(player.speedx, -maxSpeed);
@@ -108,9 +103,9 @@ public class SimpleSlickGame extends BasicGame
     }
 
     private void addYMovementHandler(GameContainer gc) {
-        if(gc.getInput().isKeyPressed(Input.KEY_UP) && player.speedy==0f) {
+        if(gc.getInput().isKeyPressed(GameConstants.MOVE_UP_INPUT) && player.speedy==0f) {
             player.speedy=-25f;
-        } else if(gc.getInput().isKeyPressed(Input.KEY_DOWN) && player.speedy==0f) {
+        } else if(gc.getInput().isKeyPressed(GameConstants.MOVE_DOWN_INPUT) && player.speedy==0f) {
             player.posy+=1f;
         } else{
             player.speedy+=1f;
@@ -194,9 +189,9 @@ public class SimpleSlickGame extends BasicGame
         Image backg = new Image("src\\backg.png");
 
         for(int i=0; i<10; i++) {
-            backg.draw((-player.posx+camerax)/10+3840*i-100, (-player.posy+cameray)/40-100);
-            back3.draw((-player.posx+camerax)/8+3840*i-100, (-player.posy+cameray)/32-100);
-            back2.draw((-player.posx+camerax)/6+3840*i-100, (-player.posy+cameray)/24-100);
+            backg.draw((-player.posx+camerax)/40+3840*i-1000, (-player.posy+cameray)/40-100);
+            back2.draw((-player.posx+camerax)/20+3840*i-1000, (-player.posy+cameray)/32-100);
+            back3.draw((-player.posx+camerax)/10+3840*i-1000, (-player.posy+cameray)/24-100);
         }
     }
 
@@ -225,8 +220,8 @@ public class SimpleSlickGame extends BasicGame
     private void drawMenu(GameContainer gc, Graphics g) {
         g.setBackground(new Color(145,40,153));
 
-        g.drawString("N to start a new game", 100, 100);
-        g.drawString("R to retry",100, 200);
+        g.drawString(Input.getKeyName(GameConstants.NEW_GAME_INPUT) + " to start a new game", 100, 100);
+        g.drawString(Input.getKeyName(GameConstants.RESTART_GAME_INPUT) + " to retry",100, 200);
         g.drawString(menuText, 100, 300);
     }
     
