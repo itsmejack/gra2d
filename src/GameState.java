@@ -81,7 +81,7 @@ public class GameState extends ApplicationState{
     }
 
     private void handleGame(GameContainer gc) throws SlickException {
-        addRestartHandler(gc);
+        additionalKeysHandler(gc);
         addXMovementHandler(gc);
         addYMovementHandler(gc);
         game.player.updateState();
@@ -113,7 +113,7 @@ public class GameState extends ApplicationState{
 
     private void addYMovementHandler(GameContainer gc) {
         if(gc.getInput().isKeyPressed(GameConstants.MOVE_UP_INPUT) && game.player.speedy==0f) {
-            game.player.speedy=-25f;
+                game.player.speedy=-28f;
         } else if(gc.getInput().isKeyPressed(GameConstants.MOVE_DOWN_INPUT) && game.player.speedy==0f) {
             game.player.posy+=1f;
         } else{
@@ -122,10 +122,14 @@ public class GameState extends ApplicationState{
         }
     }
 
-    private void addRestartHandler(GameContainer gc){
+    private void additionalKeysHandler(GameContainer gc){
         if(gc.getInput().isKeyPressed(GameConstants.RESTART_GAME_INPUT)) {
-            game.player.posx = GameConstants.BLOCK_SIZE/2;
+            game.player.posx = GameConstants.BLOCK_SIZE*3/2;
             game.player.posy = game.startPosY;
+        }
+        if(gc.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
+            game.menuText = "Escaped";
+            game.changeState(new MenuState(game));
         }
     }
 
@@ -134,8 +138,8 @@ public class GameState extends ApplicationState{
         float camerax = 960f - game.player.sizex/2;
         float cameray = 540f - game.player.sizey/2;
 
-        //g.scale(gc.getScreenWidth()/1920f,gc.getScreenHeight()/1080f); //<< this final
-        g.scale(1920/1920f,1080/1080f);
+        g.scale(gc.getScreenWidth()/1920f,gc.getScreenHeight()/1080f); //<< this final
+        //g.scale(1920/1920f,1080/1080f);
 
         drawBackground(camerax, cameray, g);
         drawMap(camerax, cameray);

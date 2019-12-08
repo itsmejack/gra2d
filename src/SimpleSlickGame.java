@@ -8,7 +8,7 @@ import org.newdawn.slick.*;
 
 public class SimpleSlickGame extends BasicGame
 {
-    public SimpleSlickGame(String gamename) {
+    public SimpleSlickGame(String gamename) throws SlickException {
         super(gamename);
     }
 
@@ -16,8 +16,8 @@ public class SimpleSlickGame extends BasicGame
     public Map map;
 
     protected float maxSpeed = 15f;
-    protected int mapSizeX = 10;
-    protected int mapSizeY = 2;
+    protected int mapSizeX ;
+    protected int mapSizeY ;
     protected boolean isPaused = false;
     protected float startPosY;
     protected String menuText = "";
@@ -51,8 +51,8 @@ public class SimpleSlickGame extends BasicGame
         {
             AppGameContainer appgc;
             appgc = new AppGameContainer(new SimpleSlickGame("Chasing"));
-            appgc.setDisplayMode(1920,1080, false); //for me only xd
-            //appgc.setDisplayMode(appgc.getScreenWidth(),appgc.getScreenHeight(), true); //<<this final
+            //appgc.setDisplayMode(1920,1080, false); //for me only xd
+            appgc.setDisplayMode(appgc.getScreenWidth(),appgc.getScreenHeight(), true); //<<this final
             appgc.start();
         }
         catch (SlickException ex)
