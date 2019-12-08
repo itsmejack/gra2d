@@ -12,7 +12,16 @@ public class Player  extends Creature {
     public boolean isFlying = false;
     public boolean isWalking = false;
 
-    public Player() throws SlickException {
+    private static Player instance;
+
+    public static Player getInstance() throws SlickException {
+        if(instance != null) {
+            return instance;
+        }
+        return new Player();
+    }
+
+    private Player() throws SlickException {
 
         for (int i = 0; i < 2; i++) {
             String name = (i==0?"l":"r");

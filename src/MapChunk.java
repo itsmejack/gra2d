@@ -13,23 +13,29 @@ public class MapChunk {
     private boolean rightExit;
     private List<MapFragment> mapFragments;
 
-    private final int minPlatformLength = 1;
-    private final int maxPlatformLength = 10;
+    private int minPlatformLength;
+    private int maxPlatformLength ;
 
-    public MapChunk(boolean up, boolean down, boolean left, boolean right, float newX, float newY, boolean isFinish) throws SlickException {
+    public MapChunk(boolean up, boolean down, boolean left, boolean right, float newX, float newY, boolean isFinish, int minPlatform, int maxPlatform) throws SlickException {
         upExit = up;
         downExit = down;
         leftExit = left;
         rightExit = right;
         startX = newX;
         startY = newY;
+        minPlatformLength = minPlatform;
+        maxPlatformLength = maxPlatform;
         mapFragments = isFinish ? generateFinishChunk() : generateNewChunk();
     }
 
-    public MapChunk(float newX, float newY, boolean isFinish) throws SlickException {
-        this(true, true, true, true, newX, newY, isFinish);
+    public MapChunk(float newX, float newY, boolean isFinish, int minPlatform, int maxPlatform) throws SlickException {
+        this(true, true, true, true, newX, newY, isFinish, minPlatform, maxPlatform);
     }
 
+    public void setDifficulty(int minPlatform, int maxPlatform) {
+        minPlatformLength = minPlatform;
+        maxPlatformLength = maxPlatform;
+    }
 
     private List<MapFragment> generateFinishChunk() throws SlickException {
         List<MapFragment> temp = new ArrayList<>();

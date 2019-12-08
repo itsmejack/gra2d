@@ -87,7 +87,7 @@ public class Map {
         return result;
     }
 
-    public float generateMap(int x, int y) throws SlickException {
+    public float generateMap(int x, int y, int minPlatform, int maxPlatform) throws SlickException {
         float startHeight = 0;
         int temp[][] = new int[x][y];
         Random generator = new Random();
@@ -123,7 +123,9 @@ public class Map {
                         tempChunk = new MapChunk(
                                 currentX*64f*10,
                                 currentY*64f*10,
-                                false);
+                                false,
+                                minPlatform,
+                                maxPlatform);
                     } else {
                         tempChunk = new MapChunk(
                                 (temp[currentX][currentY - 1] != 0),
@@ -132,7 +134,9 @@ public class Map {
                                 (temp[currentX + 1][currentY] != 0),
                                 currentX*64f*10,
                                 currentY*64f*10,
-                                false);
+                                false,
+                                minPlatform,
+                                maxPlatform);
                     }
                     if(currentX == 0) {
                         startHeight = currentY*64f*10;
@@ -141,7 +145,9 @@ public class Map {
                         map.addAll(new MapChunk(
                                 (currentX+1)*64f*10,
                                 currentY*64f*10,
-                                true).getMapFragments());
+                                true,
+                                minPlatform,
+                                maxPlatform).getMapFragments());
                     }
                     map.addAll(tempChunk.getMapFragments());
                 }
