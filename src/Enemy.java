@@ -2,9 +2,9 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 public class Enemy extends Creature {
-    public Image image;
+    private Image image;
 
-    public Enemy(float posx, float posy) throws SlickException {
+    Enemy(float posx, float posy) throws SlickException {
         isCollectible = false;
         isDangerous = true;
 

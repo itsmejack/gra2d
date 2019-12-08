@@ -2,11 +2,11 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-public abstract class ApplicationState {
+abstract class ApplicationState {
 
-    public SimpleSlickGame game;
+    SimpleSlickGame game;
 
-    public ApplicationState(SimpleSlickGame newGame) {
+    ApplicationState(SimpleSlickGame newGame) {
         this.game = newGame;
     }
 

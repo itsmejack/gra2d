@@ -1,10 +1,10 @@
-public abstract class Difficulty {
-    public String translation;
-    public int minPlatformLength;
-    public int maxPlatformLength;
-    public MenuState menu;
+abstract class Difficulty {
+    String translation;
+    int minPlatformLength;
+    int maxPlatformLength;
+    private MenuState menu;
 
-    public Difficulty(MenuState newMenu) {
+    Difficulty(MenuState newMenu) {
         this.menu = newMenu;
     }
 }

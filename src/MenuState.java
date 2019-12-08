@@ -6,7 +6,7 @@ public class MenuState extends ApplicationState{
     private Difficulty difficulty = new EasyDifficulty(this);
     private MapSize mapSize = new SmallSize(this);
     private int selectedOption = 0;
-    private int highScore = 0;
+    private int highScore;
 
     private enum Option {
         NEW, RESTART, DIFFICULTY, SIZE, EXIT;

@@ -1,5 +1,5 @@
-public class MediumSize extends MapSize  {
-    public MediumSize(MenuState newMenu) {
+class MediumSize extends MapSize  {
+    MediumSize(MenuState newMenu) {
         super(newMenu);
         translation = "MEDIUM";
         mapSizeX = GameConstants.MEDIUM_MAP_X;

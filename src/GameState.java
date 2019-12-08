@@ -1,13 +1,13 @@
 import org.newdawn.slick.*;
 
 public class GameState extends ApplicationState{
-    public GameState(SimpleSlickGame game) {
+    GameState(SimpleSlickGame game) {
         super(game);
     }
 
 
     @Override
-    void update(GameContainer gc, int delta) throws SlickException {
+    void update(GameContainer gc, int delta) {
         game.timer -= delta;
         handleGame(gc);
         updatePositionsAndSpeedAndStates();
@@ -86,7 +86,7 @@ public class GameState extends ApplicationState{
         game.player.updateState();
     }
 
-    private void handleGame(GameContainer gc) throws SlickException {
+    private void handleGame(GameContainer gc) {
         additionalKeysHandler(gc);
         addXMovementHandler(gc);
         addYMovementHandler(gc);
@@ -149,7 +149,6 @@ public class GameState extends ApplicationState{
         float camerax = 960f - game.player.sizex/2;
         float cameray = 540f - game.player.sizey/2;
         g.scale(gc.getScreenWidth()/1920f,gc.getScreenHeight()/1080f); //<< this final
-        //g.scale(1920/1920f,1080/1080f);
 
         drawBackground(camerax, cameray, g);
         drawMap(camerax, cameray);

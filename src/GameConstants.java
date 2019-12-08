@@ -6,7 +6,6 @@ public final class GameConstants {
     static float BLOCK_SIZE = 64f;
     static int CHUNK_SIZE = 10;
 
-    static int NEW_GAME_INPUT = Input.KEY_N;
     static int RESTART_GAME_INPUT = Input.KEY_R;
     static int ENTER_INPUT = Input.KEY_ENTER;
 

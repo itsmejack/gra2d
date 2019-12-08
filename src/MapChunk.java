@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MapChunk {
+class MapChunk {
     private float startX;
     private float startY;
     private boolean upExit;
@@ -16,7 +16,7 @@ public class MapChunk {
     private int minPlatformLength;
     private int maxPlatformLength ;
 
-    public MapChunk(boolean up, boolean down, boolean left, boolean right, float newX, float newY, boolean isFinish, int minPlatform, int maxPlatform) throws SlickException {
+    MapChunk(boolean up, boolean down, boolean left, boolean right, float newX, float newY, boolean isFinish, int minPlatform, int maxPlatform) throws SlickException {
         upExit = up;
         downExit = down;
         leftExit = left;
@@ -28,7 +28,7 @@ public class MapChunk {
         gameObjects = isFinish ? generateFinishChunk() : generateNewChunk();
     }
 
-    public MapChunk(float newX, float newY, boolean isFinish, int minPlatform, int maxPlatform) throws SlickException {
+    MapChunk(float newX, float newY, boolean isFinish, int minPlatform, int maxPlatform) throws SlickException {
         this(true, true, true, true, newX, newY, isFinish, minPlatform, maxPlatform);
     }
 
@@ -67,7 +67,7 @@ public class MapChunk {
         return temp;
     }
 
-    public List<GameObject> getMapFragments() {
+    List<GameObject> getMapFragments() {
         return gameObjects;
     }
 

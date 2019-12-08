@@ -2,23 +2,24 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
-public class Player  extends Creature {
+class Player  extends Creature {
 
-    public Animation[] standAnimation = new Animation[2];
-    public Animation[] walkAnimation = new Animation[2];
-    public Animation[] flyAnimation = new Animation[2];
+    private Animation[] standAnimation = new Animation[2];
+    private Animation[] walkAnimation = new Animation[2];
+    private Animation[] flyAnimation = new Animation[2];
 
-    public boolean isHeadingRight = true;
-    public boolean isFlying = false;
-    public boolean isWalking = false;
+    boolean isHeadingRight = true;
+    boolean isFlying = false;
+    boolean isWalking = false;
 
     private static Player instance;
 
-    public static Player getInstance() throws SlickException {
+    static Player getInstance() throws SlickException {
         if(instance != null) {
             return instance;
         }
-        return new Player();
+        instance = new Player();
+        return instance;
     }
 
     private Player() throws SlickException {
@@ -40,7 +41,7 @@ public class Player  extends Creature {
         isDangerous = false;
     }
 
-    public void updateState() {
+    void updateState() {
         int direction = 0;
         if(isHeadingRight) {
             direction = 1;

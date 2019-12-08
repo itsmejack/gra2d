@@ -1,5 +1,5 @@
-public class HardDifficulty extends Difficulty {
-    public HardDifficulty(MenuState newMenu) {
+class HardDifficulty extends Difficulty {
+    HardDifficulty(MenuState newMenu) {
         super(newMenu);
         translation = "HARD";
         minPlatformLength = GameConstants.MIN_PLATFORM_LENGTH_HARD;

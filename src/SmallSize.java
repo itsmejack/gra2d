@@ -1,5 +1,5 @@
-public class SmallSize extends MapSize {
-    public SmallSize(MenuState newMenu) {
+class SmallSize extends MapSize {
+    SmallSize(MenuState newMenu) {
         super(newMenu);
         translation = "SMALL";
         mapSizeX = GameConstants.SMALL_MAP_X;

@@ -5,22 +5,22 @@ import java.util.Random;
 
 public class Map {
     private ArrayList<GameObject> map = new ArrayList<>();
-    public boolean isFinished = false;
-    public int collectedCoins = 0;
-    public boolean isHit = false;
+    boolean isFinished = false;
+    int collectedCoins = 0;
+    boolean isHit = false;
 
-    public Map() {}
+    Map() {}
 
     public void add(MapFragment mapFragment) {
         map.add(mapFragment);
     }
 
-    public ArrayList<GameObject> getFragments() {
+    ArrayList<GameObject> getFragments() {
         return map;
     }
 
     //is collider colliding with top of the destination, for example player jumping on top of block
-    public GameObject isCollidingWithTop(Creature collider) {
+    GameObject isCollidingWithTop(Creature collider) {
         GameObject result = null;
         for (GameObject destination : map) {
             if (collider.getBottom() + collider.speedy > destination.getTop() && collider.getBottom() <= destination.getTop()) {
@@ -44,7 +44,7 @@ public class Map {
         return result;
     }
 
-    public GameObject isCollidingWithBottom(Creature collider){
+    GameObject isCollidingWithBottom(Creature collider){
         GameObject result = null;
         for (GameObject destination : map) {
             if(collider.getTop()>=destination.getBottom() && collider.getTop()+collider.speedy<destination.getBottom()) {
@@ -68,7 +68,7 @@ public class Map {
         return result;
     }
 
-    public GameObject isCollidingWithRight(Creature collider) {
+    GameObject isCollidingWithRight(Creature collider) {
         GameObject result = null;
         for (GameObject destination : map) {
             if (collider.getLeft() >= destination.getRight() && collider.getLeft() + collider.speedx < destination.getRight()) {
@@ -92,7 +92,7 @@ public class Map {
         return result;
     }
 
-    public GameObject isCollidingWithLeft(Creature collider) {
+    GameObject isCollidingWithLeft(Creature collider) {
         GameObject result = null;
         for (GameObject destination : map) {
             if (collider.getRight() + collider.speedx > destination.getLeft() && collider.getRight() <= destination.getLeft()) {
@@ -116,9 +116,9 @@ public class Map {
         return result;
     }
 
-    public float generateMap(int x, int y, int minPlatform, int maxPlatform) throws SlickException {
+    float generateMap(int x, int y, int minPlatform, int maxPlatform) throws SlickException {
         float startHeight = 0;
-        int temp[][] = new int[x][y];
+        int[][] temp = new int[x][y];
         Random generator = new Random();
 
         int currentX = 0;

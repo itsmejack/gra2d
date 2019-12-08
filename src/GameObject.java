@@ -1,31 +1,29 @@
-import org.newdawn.slick.*;
-
 public abstract class GameObject {
-    public float posx;
-    public float posy;
-    public float sizex;
-    public float sizey;
-    public boolean isSolid = false;
-    public boolean isDestinationPoint = false;
-    public boolean isCollected = false;
-    public boolean isCollectible;
-    public boolean isDangerous;
+    float posx;
+    float posy;
+    float sizex;
+    float sizey;
+    boolean isSolid = false;
+    boolean isDestinationPoint = false;
+    boolean isCollected = false;
+    boolean isCollectible;
+    boolean isDangerous;
 
     public abstract void draw(float x, float y);
 
-    public float getLeft() {
+    float getLeft() {
         return posx;
     }
 
-    public float getRight() {
+    float getRight() {
         return posx+sizex;
     }
 
-    public float getTop() {
+    float getTop() {
         return posy;
     }
 
-    public float getBottom() {
+    float getBottom() {
         return posy+sizey;
     }
 }

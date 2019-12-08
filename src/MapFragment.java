@@ -1,12 +1,10 @@
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import java.util.Random;
-
 public class MapFragment  extends GameObject {
-    public Image image;
+    private Image image;
 
-    public MapFragment(float posx, float posy) throws SlickException {
+    MapFragment(float posx, float posy) throws SlickException {
         this.posx = posx;
         this.posy = posy;
         this.sizex = GameConstants.BLOCK_SIZE;
@@ -16,7 +14,7 @@ public class MapFragment  extends GameObject {
         isDangerous = false;
     }
 
-    public MapFragment(float posx, float posy, boolean isDestinationPoint) throws SlickException {
+    MapFragment(float posx, float posy, boolean isDestinationPoint) throws SlickException {
         this.posx = posx;
         this.posy = posy;
         this.sizex = GameConstants.BLOCK_SIZE;

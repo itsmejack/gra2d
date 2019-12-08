@@ -1,31 +1,28 @@
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.lwjgl.Sys;
 import org.newdawn.slick.*;
 
 
 public class SimpleSlickGame extends BasicGame
 {
-    public SimpleSlickGame(String gamename) throws SlickException {
+    private SimpleSlickGame(String gamename) {
         super(gamename);
     }
 
-    public Player player;
-    public Map map;
-    protected int timer = 0;
+    Player player;
+    Map map;
+    int timer = 0;
 
-    protected float maxSpeed = 15f;
-    protected int mapSizeX ;
-    protected int mapSizeY ;
-    protected boolean isPaused = false;
-    protected float startPosY;
-    protected String menuText = "";
+    float maxSpeed = 15f;
+    int mapSizeX ;
+    int mapSizeY ;
+    float startPosY;
+    String menuText = "";
     private ApplicationState state = new MenuState(this);
 
     @Override
-    public void init(GameContainer gc) throws SlickException {
+    public void init(GameContainer gc) {
         gc.setVSync(true);
         gc.setMaximumLogicUpdateInterval(10);
         gc.setTargetFrameRate(60);
@@ -42,7 +39,7 @@ public class SimpleSlickGame extends BasicGame
         state.drawState(gc, g);
     }
 
-    public void changeState(ApplicationState newState) {
+    void changeState(ApplicationState newState) {
         this.state = newState;
     }
 
@@ -52,8 +49,7 @@ public class SimpleSlickGame extends BasicGame
         {
             AppGameContainer appgc;
             appgc = new AppGameContainer(new SimpleSlickGame("Chasing"));
-            //appgc.setDisplayMode(1920,1080, false); //for me only xd
-            appgc.setDisplayMode(appgc.getScreenWidth(),appgc.getScreenHeight(), true); //<<this final
+            appgc.setDisplayMode(appgc.getScreenWidth(),appgc.getScreenHeight(), true);
             appgc.start();
         }
         catch (SlickException ex)
