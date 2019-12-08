@@ -24,6 +24,10 @@ public final class GameConstants {
     static int LARGE_MAP_X = 100;
     static int LARGE_MAP_Y = 20;
 
+    static int SMALL_TIME = 20000;
+    static int MEDIUM_TIME = 60000;
+    static int LARGE_TIME = 200000;
+
     static int MIN_PLATFORM_LENGTH_EASY = 3;
     static int MIN_PLATFORM_LENGTH_MEDIUM = 2;
     static int MIN_PLATFORM_LENGTH_HARD = 1;

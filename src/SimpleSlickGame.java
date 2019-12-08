@@ -14,6 +14,7 @@ public class SimpleSlickGame extends BasicGame
 
     public Player player;
     public Map map;
+    protected int timer = 0;
 
     protected float maxSpeed = 15f;
     protected int mapSizeX ;
@@ -31,8 +32,8 @@ public class SimpleSlickGame extends BasicGame
     }
 
     @Override
-    public void update(GameContainer gc, int i) throws SlickException {
-        state.update(gc);
+    public void update(GameContainer gc, int delta) throws SlickException {
+        state.update(gc, delta);
     }
     
     @Override

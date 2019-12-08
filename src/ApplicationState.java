@@ -10,7 +10,7 @@ public abstract class ApplicationState {
         this.game = newGame;
     }
 
-    abstract void update(GameContainer gc) throws SlickException;
+    abstract void update(GameContainer gc, int delta) throws SlickException;
     abstract void drawState(GameContainer gc, Graphics g) throws SlickException;
 
 }

@@ -36,7 +36,8 @@ public class Player  extends Creature {
         speedy = 0f;
 
         animation = standAnimation[1];
-
+        isCollectible = false;
+        isDangerous = false;
     }
 
     public void updateState() {

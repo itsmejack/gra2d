@@ -5,27 +5,29 @@ import java.util.Random;
 
 public class MapFragment  extends GameObject {
     public Image image;
-    public boolean isSolid = false;
-    public boolean isDestinationPoint = false;
 
     public MapFragment(float posx, float posy) throws SlickException {
-        Random generator = new Random();
         this.posx = posx;
         this.posy = posy;
         this.sizex = GameConstants.BLOCK_SIZE;
         this.sizey = GameConstants.BLOCK_SIZE;
-        //this.image = (generator.nextBoolean()?new Image("C:\\Users\\Student236794\\Desktop\\aaa1080p.png"):new Image("C:\\Users\\Student236794\\Desktop\\bbb1080p.png"));
-        this.image = generator.nextBoolean()?new Image("src\\aaa1080p.png"):new Image("src\\bbb1080p.png");
+        this.image = new Image("src\\aaa1080p.png");
+        isCollectible = false;
+        isDangerous = false;
     }
 
     public MapFragment(float posx, float posy, boolean isDestinationPoint) throws SlickException {
-        Random generator = new Random();
         this.posx = posx;
         this.posy = posy;
         this.sizex = GameConstants.BLOCK_SIZE;
         this.sizey = GameConstants.BLOCK_SIZE;
-        //this.image = (generator.nextBoolean()?new Image("C:\\Users\\Student236794\\Desktop\\aaa1080p.png"):new Image("C:\\Users\\Student236794\\Desktop\\bbb1080p.png"));
         this.image = new Image("src\\bbb1080p.png");
         this.isDestinationPoint = isDestinationPoint;
+        isCollectible = false;
+        isDangerous = false;
+    }
+
+    public void draw(float x, float y) {
+        image.draw(x, y);
     }
 }

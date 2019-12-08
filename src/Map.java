@@ -4,27 +4,35 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Map {
-    private ArrayList<MapFragment> map = new ArrayList<>();
+    private ArrayList<GameObject> map = new ArrayList<>();
     public boolean isFinished = false;
+    public int collectedCoins = 0;
+    public boolean isHit = false;
 
-    public Map() {
-    }
+    public Map() {}
 
     public void add(MapFragment mapFragment) {
         map.add(mapFragment);
     }
 
-    public ArrayList<MapFragment> getFragments() {
+    public ArrayList<GameObject> getFragments() {
         return map;
     }
 
     //is collider colliding with top of the destination, for example player jumping on top of block
-    public MapFragment isCollidingWithTop(Creature collider) {
-        MapFragment result = null;
-        for (MapFragment destination : map) {
+    public GameObject isCollidingWithTop(Creature collider) {
+        GameObject result = null;
+        for (GameObject destination : map) {
             if (collider.getBottom() + collider.speedy > destination.getTop() && collider.getBottom() <= destination.getTop()) {
                 if (destination.getRight() > collider.getLeft() && collider.getLeft() > destination.getLeft() || destination.getRight() > collider.getRight() && collider.getRight() > destination.getLeft() || destination.getLeft() == collider.getLeft() && destination.getRight() == collider.getRight()){
-                    if (result == null || result.posy > destination.posy) {
+                    if(destination.isCollectible) {
+                        if(!destination.isCollected) {
+                            collectedCoins++;
+                            destination.isCollected = true;
+                        }
+                    } else if(destination.isDangerous) {
+                        isHit = true;
+                    } else if (result == null || result.posy > destination.posy) {
                         result = destination;
                     }
                     if(destination.isDestinationPoint) {
@@ -36,12 +44,19 @@ public class Map {
         return result;
     }
 
-    public MapFragment isCollidingWithBottom(Creature collider){
-        MapFragment result = null;
-        for (MapFragment destination : map) {
+    public GameObject isCollidingWithBottom(Creature collider){
+        GameObject result = null;
+        for (GameObject destination : map) {
             if(collider.getTop()>=destination.getBottom() && collider.getTop()+collider.speedy<destination.getBottom()) {
                 if (destination.getRight() > collider.getLeft() && collider.getLeft() > destination.getLeft() || destination.getRight() > collider.getRight() && collider.getRight() > destination.getLeft() || destination.getLeft() == collider.getLeft() && destination.getRight() == collider.getRight()) {
-                    if ((result == null || result.posy < destination.posy) && destination.isSolid) {
+                    if(destination.isCollectible) {
+                        if(!destination.isCollected) {
+                            collectedCoins++;
+                            destination.isCollected = true;
+                        }
+                    } else if(destination.isDangerous) {
+                        isHit = true;
+                    } else if ((result == null || result.posy < destination.posy) && destination.isSolid) {
                         result = destination;
                     }
                     if(destination.isDestinationPoint) {
@@ -53,12 +68,19 @@ public class Map {
         return result;
     }
 
-    public MapFragment isCollidingWithRight(Creature collider) {
-        MapFragment result = null;
-        for (MapFragment destination : map) {
+    public GameObject isCollidingWithRight(Creature collider) {
+        GameObject result = null;
+        for (GameObject destination : map) {
             if (collider.getLeft() >= destination.getRight() && collider.getLeft() + collider.speedx < destination.getRight()) {
                 if (collider.getBottom() > destination.getTop() && destination.getTop() > collider.getTop() || collider.getBottom() > destination.getBottom() && destination.getBottom() > collider.getTop()) {
-                    if ((result == null || result.posx < destination.posx) && destination.isSolid) {
+                    if(destination.isCollectible) {
+                        if(!destination.isCollected) {
+                            collectedCoins++;
+                            destination.isCollected = true;
+                        }
+                    } else if(destination.isDangerous) {
+                        isHit = true;
+                    } else if ((result == null || result.posx < destination.posx) && destination.isSolid) {
                         result = destination;
                     }
                     if(destination.isDestinationPoint) {
@@ -70,12 +92,19 @@ public class Map {
         return result;
     }
 
-    public MapFragment isCollidingWithLeft(Creature collider) {
-        MapFragment result = null;
-        for (MapFragment destination : map) {
+    public GameObject isCollidingWithLeft(Creature collider) {
+        GameObject result = null;
+        for (GameObject destination : map) {
             if (collider.getRight() + collider.speedx > destination.getLeft() && collider.getRight() <= destination.getLeft()) {
                 if (collider.getBottom() > destination.getTop() && destination.getTop() > collider.getTop() || collider.getBottom() > destination.getBottom() && destination.getBottom() > collider.getTop()) {
-                    if ((result == null || result.posx > destination.posx) && destination.isSolid) {
+                    if(destination.isCollectible) {
+                        if(!destination.isCollected) {
+                            collectedCoins++;
+                            destination.isCollected = true;
+                        }
+                    } else if(destination.isDangerous) {
+                        isHit = true;
+                    } else if ((result == null || result.posx > destination.posx) && destination.isSolid) {
                         result = destination;
                     }
                     if(destination.isDestinationPoint) {

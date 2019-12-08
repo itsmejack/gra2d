@@ -5,7 +5,13 @@ public abstract class GameObject {
     public float posy;
     public float sizex;
     public float sizey;
-    //public Image defaultImage;
+    public boolean isSolid = false;
+    public boolean isDestinationPoint = false;
+    public boolean isCollected = false;
+    public boolean isCollectible;
+    public boolean isDangerous;
+
+    public abstract void draw(float x, float y);
 
     public float getLeft() {
         return posx;

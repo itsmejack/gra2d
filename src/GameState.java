@@ -5,12 +5,13 @@ public class GameState extends ApplicationState{
         super(game);
     }
 
+
     @Override
-    void update(GameContainer gc) throws SlickException {
+    void update(GameContainer gc, int delta) throws SlickException {
+        game.timer -= delta;
         handleGame(gc);
         updatePositionsAndSpeedAndStates();
         if(isDead()) {
-            game.menuText = "You are dead";
             game.changeState(new MenuState(game));
         }
         if(game.map.isFinished) {
@@ -20,14 +21,19 @@ public class GameState extends ApplicationState{
     }
 
     private boolean isDead() {
-        if(game.player.posy > (game.mapSizeY+5)*GameConstants.BLOCK_SIZE*GameConstants.CHUNK_SIZE) {
+        if(game.player.posy > (game.mapSizeY+5)*GameConstants.BLOCK_SIZE*GameConstants.CHUNK_SIZE || game.map.isHit) {
+            game.menuText = "You are dead";
+            return true;
+        }
+        if(game.timer<0) {
+            game.menuText = "You ran out of time";
             return true;
         }
         return false;
     }
 
     private void updateXPosAndSpeed() {
-        MapFragment block;
+        GameObject block;
         if(game.player.speedx>0) {
             block = game.map.isCollidingWithLeft(game.player);
             if(block!=null) {
@@ -46,7 +52,7 @@ public class GameState extends ApplicationState{
     }
 
     private void updateYPosAndSpeed() {
-        MapFragment block = null;
+        GameObject block = null;
 
         if(game.player.speedy>0) {
             block = game.map.isCollidingWithTop(game.player);
@@ -87,6 +93,11 @@ public class GameState extends ApplicationState{
         game.player.updateState();
     }
 
+    private void drawUI(Graphics g) {
+        g.drawString("Time " + game.timer / 1000, 100, 100);
+        g.drawString("Coins " + game.map.collectedCoins, 200, 100);
+    }
+
     public void drawPos(Graphics g) {
         g.drawString(Float.toString(game.player.speedx), 100, 100);
         g.drawString(Float.toString(game.player.speedy), 160, 100);
@@ -124,7 +135,7 @@ public class GameState extends ApplicationState{
 
     private void additionalKeysHandler(GameContainer gc){
         if(gc.getInput().isKeyPressed(GameConstants.RESTART_GAME_INPUT)) {
-            game.player.posx = GameConstants.BLOCK_SIZE*3/2;
+            game.player.posx = GameConstants.BLOCK_SIZE*5/2;
             game.player.posy = game.startPosY;
         }
         if(gc.getInput().isKeyPressed(Input.KEY_ESCAPE)) {
@@ -137,13 +148,13 @@ public class GameState extends ApplicationState{
     void drawState(GameContainer gc, Graphics g) throws SlickException {
         float camerax = 960f - game.player.sizex/2;
         float cameray = 540f - game.player.sizey/2;
-
         g.scale(gc.getScreenWidth()/1920f,gc.getScreenHeight()/1080f); //<< this final
         //g.scale(1920/1920f,1080/1080f);
 
         drawBackground(camerax, cameray, g);
         drawMap(camerax, cameray);
         drawPlayer(camerax, cameray);
+        drawUI(g);
     }
 
     private void drawBackground(float camerax, float cameray, Graphics g) throws SlickException {
@@ -161,8 +172,10 @@ public class GameState extends ApplicationState{
     }
 
     private void drawMap(float camerax, float cameray) {
-        for (MapFragment block : game.map.getFragments()) {
-            block.image.draw(block.posx-game.player.posx+camerax, block.posy-game.player.posy+cameray);
+        for (GameObject block : game.map.getFragments()) {
+            if(!block.isCollected) {
+                block.draw(block.posx-game.player.posx+camerax, block.posy-game.player.posy+cameray);
+            }
         }
     }
 

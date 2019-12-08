@@ -11,7 +11,7 @@ public class MapChunk {
     private boolean downExit;
     private boolean leftExit;
     private boolean rightExit;
-    private List<MapFragment> mapFragments;
+    private List<GameObject> gameObjects;
 
     private int minPlatformLength;
     private int maxPlatformLength ;
@@ -25,20 +25,15 @@ public class MapChunk {
         startY = newY;
         minPlatformLength = minPlatform;
         maxPlatformLength = maxPlatform;
-        mapFragments = isFinish ? generateFinishChunk() : generateNewChunk();
+        gameObjects = isFinish ? generateFinishChunk() : generateNewChunk();
     }
 
     public MapChunk(float newX, float newY, boolean isFinish, int minPlatform, int maxPlatform) throws SlickException {
         this(true, true, true, true, newX, newY, isFinish, minPlatform, maxPlatform);
     }
 
-    public void setDifficulty(int minPlatform, int maxPlatform) {
-        minPlatformLength = minPlatform;
-        maxPlatformLength = maxPlatform;
-    }
-
-    private List<MapFragment> generateFinishChunk() throws SlickException {
-        List<MapFragment> temp = new ArrayList<>();
+    private List<GameObject> generateFinishChunk() throws SlickException {
+        List<GameObject> temp = new ArrayList<>();
         for(int currentX=0; currentX<GameConstants.CHUNK_SIZE; currentX++) {
             temp.add(new MapFragment(startX + currentX*GameConstants.BLOCK_SIZE, startY + (GameConstants.CHUNK_SIZE-1)*GameConstants.BLOCK_SIZE));
         }
@@ -46,8 +41,8 @@ public class MapChunk {
         return temp;
     }
 
-    private List<MapFragment> generateNewChunk() throws SlickException {
-        List<MapFragment> temp = new ArrayList<>();
+    private List<GameObject> generateNewChunk() throws SlickException {
+        List<GameObject> temp = new ArrayList<>();
 
         if(upExit) {
             temp.addAll(generateRandomPlatform(2,7,2,2));
@@ -72,11 +67,11 @@ public class MapChunk {
         return temp;
     }
 
-    public List<MapFragment> getMapFragments() {
-        return mapFragments;
+    public List<GameObject> getMapFragments() {
+        return gameObjects;
     }
 
-    private List<MapFragment> generateRandomPlatform(int minX, int maxX, int minY, int maxY) throws SlickException {
+    private List<GameObject> generateRandomPlatform(int minX, int maxX, int minY, int maxY) throws SlickException {
         Random generator = new Random();
 
         int currentY = generator.nextInt(maxY-minY+minPlatformLength)+minY;
@@ -86,10 +81,16 @@ public class MapChunk {
         return generatePlatform(rStartX, rEndX, currentY);
     }
     
-    private List<MapFragment> generatePlatform(int minX, int maxX, int newY) throws SlickException {
-        List<MapFragment> temp = new ArrayList<>();
-
+    private List<GameObject> generatePlatform(int minX, int maxX, int newY) throws SlickException {
+        List<GameObject> temp = new ArrayList<>();
+        Random generator = new Random();
         for (int currentX=minX; currentX<=maxX; currentX++) {
+            if(generator.nextInt(10) < 1) {
+                temp.add(new MapItem(startX+currentX*GameConstants.BLOCK_SIZE, startY+(newY-1)*GameConstants.BLOCK_SIZE));
+            }
+            if(generator.nextInt(100) < 1) {
+                temp.add(new Enemy(startX+currentX*GameConstants.BLOCK_SIZE, startY+(newY-1)*GameConstants.BLOCK_SIZE));
+            }
             temp.add(new MapFragment(startX+currentX*GameConstants.BLOCK_SIZE, startY+newY*GameConstants.BLOCK_SIZE));
         }
 

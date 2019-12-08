@@ -1,9 +1,12 @@
 import org.newdawn.slick.*;
 
+import java.util.Optional;
+
 public class MenuState extends ApplicationState{
     private Difficulty difficulty = new EasyDifficulty(this);
     private MapSize mapSize = new SmallSize(this);
     private int selectedOption = 0;
+    private int highScore = 0;
 
     private enum Option {
         NEW, RESTART, DIFFICULTY, SIZE, EXIT;
@@ -52,7 +55,9 @@ public class MenuState extends ApplicationState{
     }
 
     public MenuState(SimpleSlickGame game) {
+
         super(game);
+        highScore = game.timer * Optional.ofNullable(game.map).map(e -> e.collectedCoins).orElse(1);
     }
 
     private void drawRetry(Graphics g) {
@@ -73,7 +78,11 @@ public class MenuState extends ApplicationState{
     }
 
     private void drawInfo(Graphics g) {
+
         g.drawString(game.menuText, 500, 300);
+        if(game.menuText.equals("You won")) {
+            g.drawString("Your score " + highScore, 500, 500);
+        }
     }
 
     private void drawSelection(Graphics g) {
@@ -86,7 +95,7 @@ public class MenuState extends ApplicationState{
     }
 
     @Override
-    void update(GameContainer gc) throws SlickException {
+    void update(GameContainer gc, int delta) throws SlickException {
         handleMenu(gc);
     }
 
@@ -115,9 +124,10 @@ public class MenuState extends ApplicationState{
             game.map = new Map();
             game.startPosY = game.map.generateMap(mapSize.mapSizeX, mapSize.mapSizeY, difficulty.minPlatformLength, difficulty.maxPlatformLength);
         }
-        game.player.posx = GameConstants.BLOCK_SIZE*3/2;
+        game.player.posx = GameConstants.BLOCK_SIZE*5/2;
         game.player.posy = game.startPosY;
         game.map.isFinished = false;
+        game.timer = mapSize.maxTime;
         game.changeState(new GameState(game));
 
     }
