@@ -9,7 +9,7 @@ public class GameState extends ApplicationState{
     @Override
     void update(GameContainer gc, int delta) {
         game.timer -= delta;
-        handleGame(gc);
+        addKeysHandler(gc);
         updatePositionsAndSpeedAndStates();
         if(isDead()) {
             game.changeState(new MenuState(game));
@@ -86,11 +86,10 @@ public class GameState extends ApplicationState{
         game.player.updateState();
     }
 
-    private void handleGame(GameContainer gc) {
+    private void addKeysHandler(GameContainer gc) {
         additionalKeysHandler(gc);
         addXMovementHandler(gc);
         addYMovementHandler(gc);
-        game.player.updateState();
     }
 
     private void drawUI(Graphics g) {
@@ -148,8 +147,11 @@ public class GameState extends ApplicationState{
     void drawState(GameContainer gc, Graphics g) throws SlickException {
         float camerax = 960f - game.player.sizex/2;
         float cameray = 540f - game.player.sizey/2;
-        g.scale(gc.getScreenWidth()/1920f,gc.getScreenHeight()/1080f); //<< this final
+        g.scale(gc.getScreenWidth()/1920f,gc.getScreenHeight()/1080f);
+        drawGameElements(g, camerax, cameray);
+    }
 
+    private void drawGameElements(Graphics g, float camerax, float cameray) throws SlickException {
         drawBackground(camerax, cameray, g);
         drawMap(camerax, cameray);
         drawPlayer(camerax, cameray);

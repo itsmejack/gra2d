@@ -71,8 +71,8 @@ public class MenuState extends ApplicationState{
     private void drawOptions(Graphics g) {
         g.setColor(Color.white);
         g.drawString("Start a new game", 100, 100);
-        g.drawString("Difficulty " + difficulty.translation, 100, 300);
-        g.drawString("Map size " + mapSize.translation, 100, 400);
+        g.drawString("< Difficulty " + difficulty.translation + " >", 100, 300);
+        g.drawString("< Map size " + mapSize.translation + " >", 100, 400);
         g.drawString("Exit", 100, 500);
         drawRetry(g);
     }
@@ -96,12 +96,16 @@ public class MenuState extends ApplicationState{
 
     @Override
     void update(GameContainer gc, int delta) throws SlickException {
-        handleMenu(gc);
+        handleMenuOptions(gc);
     }
 
     @Override
     void drawState(GameContainer gc, Graphics g) {
         setupMenuGraphics(g, gc);
+        drawMenuElements(g);
+    }
+
+    private void drawMenuElements(Graphics g) {
         drawOptions(g);
         drawInfo(g);
         drawSelection(g);
@@ -166,7 +170,7 @@ public class MenuState extends ApplicationState{
         }
     }
 
-    private void handleMenu(GameContainer gc) throws SlickException {
+    private void handleMenuOptions(GameContainer gc) throws SlickException {
         handleMovingThroughMenu(gc);
         handleEnterOptions(gc);
         handleSelectOptions(gc);

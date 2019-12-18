@@ -117,7 +117,14 @@ public class Map {
     }
 
     float generateMap(int x, int y, int minPlatform, int maxPlatform) throws SlickException {
-        float startHeight = 0;
+        return convertChunksToBlocksAndReturnStartHeight(
+                minPlatform,
+                maxPlatform,
+                x, y,
+                generateAllChunks(x, y));
+    }
+
+    private int[][] generateAllChunks(int x, int y) {
         int[][] temp = new int[x][y];
         Random generator = new Random();
 
@@ -144,39 +151,26 @@ public class Map {
         }
         temp[currentX][currentY] = -1;
 
-        for(currentX=0; currentX<x; currentX++) {
-            for(currentY=0; currentY<y; currentY++) {
+        return temp;
+    }
+
+    private float convertChunksToBlocksAndReturnStartHeight(int minPlatform, int maxPlatform, int x, int y, int[][] temp) throws SlickException {
+        float startHeight = 0;
+
+        for(int currentX =0; currentX <x; currentX++) {
+            for(int currentY =0; currentY <y; currentY++) {
                 if(temp[currentX][currentY] != 0) {
                     MapChunk tempChunk;
                     if(currentX == 0 || currentX == x-1 || currentY == 0 || currentY == y-1) {
-                        tempChunk = new MapChunk(
-                                currentX*64f*10,
-                                currentY*64f*10,
-                                false,
-                                minPlatform,
-                                maxPlatform);
+                        tempChunk = generateBoundaryChunk(currentX, currentY, minPlatform, maxPlatform);
                     } else {
-                        tempChunk = new MapChunk(
-                                (temp[currentX][currentY - 1] != 0),
-                                (temp[currentX][currentY + 1] != 0),
-                                (temp[currentX - 1][currentY] != 0),
-                                (temp[currentX + 1][currentY] != 0),
-                                currentX*64f*10,
-                                currentY*64f*10,
-                                false,
-                                minPlatform,
-                                maxPlatform);
+                        tempChunk = generateRegularChunk(currentX, currentY, minPlatform, maxPlatform, temp);
                     }
                     if(currentX == 0) {
-                        startHeight = currentY*64f*10;
+                        startHeight = currentY *64f*10;
                     }
                     if(temp[currentX][currentY] == -1) {
-                        map.addAll(new MapChunk(
-                                (currentX+1)*64f*10,
-                                currentY*64f*10,
-                                true,
-                                minPlatform,
-                                maxPlatform).getMapFragments());
+                        map.addAll(generateFinishChunk(currentX, currentY, minPlatform, maxPlatform).getMapFragments());
                     }
                     map.addAll(tempChunk.getMapFragments());
                 }
@@ -184,7 +178,37 @@ public class Map {
         }
 
         return startHeight;
+    }
 
+    private MapChunk generateBoundaryChunk(int currentX, int currentY, int minPlatform, int maxPlatform) throws SlickException {
+        return new MapChunk(
+                currentX*64f*10,
+                currentY*64f*10,
+                false,
+                minPlatform,
+                maxPlatform);
+    }
+
+    private MapChunk generateRegularChunk(int currentX, int currentY, int minPlatform, int maxPlatform, int[][] temp) throws SlickException {
+        return new MapChunk(
+                (temp[currentX][currentY - 1] != 0),
+                (temp[currentX][currentY + 1] != 0),
+                (temp[currentX - 1][currentY] != 0),
+                (temp[currentX + 1][currentY] != 0),
+                currentX*64f*10,
+                currentY*64f*10,
+                false,
+                minPlatform,
+                maxPlatform);
+    }
+
+    private MapChunk generateFinishChunk(int currentX, int currentY, int minPlatform, int maxPlatform) throws SlickException {
+        return new MapChunk(
+                (currentX+1)*64f*10,
+                currentY*64f*10,
+                true,
+                minPlatform,
+                maxPlatform);
     }
 
 }
