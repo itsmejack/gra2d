@@ -70,7 +70,7 @@ public class MenuState extends ApplicationState{
 
     private void drawOptions(Graphics g) {
         g.setColor(Color.white);
-        g.drawString("Start a new game", 100, 100);
+        g.drawString("New game", 100, 100);
         g.drawString("< Difficulty " + difficulty.translation + " >", 100, 300);
         g.drawString("< Map size " + mapSize.translation + " >", 100, 400);
         g.drawString("Exit", 100, 500);

@@ -26,7 +26,7 @@ class Player  extends Creature {
 
         for (int i = 0; i < 2; i++) {
             String name = (i==0?"l":"r");
-            standAnimation[i] = new Animation(new SpriteSheet("src\\stand"+ name +".png", 64,128), 300);
+            standAnimation[i] = new Animation(new SpriteSheet("src\\stand"+ name +".png", 64,128), 400);
             walkAnimation[i] = new Animation(new SpriteSheet("src\\walkr"+ name +".png", 64,128), 150);
             flyAnimation[i] = new Animation(new SpriteSheet("src\\jump"+ name +".png", 64,128), 300);
         }

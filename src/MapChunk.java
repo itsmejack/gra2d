@@ -35,9 +35,9 @@ class MapChunk {
     private List<GameObject> generateFinishChunk() throws SlickException {
         List<GameObject> temp = new ArrayList<>();
         for(int currentX=0; currentX<GameConstants.CHUNK_SIZE; currentX++) {
-            temp.add(new MapFragment(startX + currentX*GameConstants.BLOCK_SIZE, startY + (GameConstants.CHUNK_SIZE-1)*GameConstants.BLOCK_SIZE));
+            temp.add(new MapBlock(startX + currentX*GameConstants.BLOCK_SIZE, startY + (GameConstants.CHUNK_SIZE-1)*GameConstants.BLOCK_SIZE));
         }
-        temp.add(new MapFragment(startX + (GameConstants.CHUNK_SIZE-2)*GameConstants.BLOCK_SIZE, startY + (GameConstants.CHUNK_SIZE-2)*GameConstants.BLOCK_SIZE, true));
+        temp.add(new MapBlock(startX + (GameConstants.CHUNK_SIZE-2)*GameConstants.BLOCK_SIZE, startY + (GameConstants.CHUNK_SIZE-2)*GameConstants.BLOCK_SIZE, true));
         return temp;
     }
 
@@ -91,7 +91,7 @@ class MapChunk {
             if(generator.nextInt(100) < 1) {
                 temp.add(new Enemy(startX+currentX*GameConstants.BLOCK_SIZE, startY+(newY-1)*GameConstants.BLOCK_SIZE));
             }
-            temp.add(new MapFragment(startX+currentX*GameConstants.BLOCK_SIZE, startY+newY*GameConstants.BLOCK_SIZE));
+            temp.add(new MapBlock(startX+currentX*GameConstants.BLOCK_SIZE, startY+newY*GameConstants.BLOCK_SIZE));
         }
 
         return temp;

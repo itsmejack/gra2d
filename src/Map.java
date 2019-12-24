@@ -11,8 +11,8 @@ public class Map {
 
     Map() {}
 
-    public void add(MapFragment mapFragment) {
-        map.add(mapFragment);
+    public void add(MapBlock mapBlock) {
+        map.add(mapBlock);
     }
 
     ArrayList<GameObject> getFragments() {
