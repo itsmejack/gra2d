@@ -1,21 +1,21 @@
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 
 public class Enemy extends Creature {
-    private Image image;
-
     Enemy(float posx, float posy) throws SlickException {
         isCollectible = false;
         isDangerous = true;
 
-        this.posx = posx;
-        this.posy = posy;
-        this.sizex = GameConstants.BLOCK_SIZE;
-        this.sizey = GameConstants.BLOCK_SIZE;
-        this.image = new Image("src\\enemy.png");
+        this.posx = posx+1;
+        this.posy = posy+1;
+        this.sizex = GameConstants.BLOCK_SIZE-2;
+        this.sizey = GameConstants.BLOCK_SIZE-2;
+        this.animation = new Animation(new SpriteSheet("src\\enemy.png",64,64),50);
     }
 
     public void draw(float x, float y) {
-        image.draw(x, y);
+        animation.draw(x, y);
     }
 }
