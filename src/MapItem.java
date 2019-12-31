@@ -9,7 +9,7 @@ public class MapItem extends GameObject{
         this.posy = posy;
         this.sizex = GameConstants.BLOCK_SIZE;
         this.sizey = GameConstants.BLOCK_SIZE;
-        this.image = new Image("src\\coin.png");
+        this.image = new Image("src\\img\\coin.png");
         isCollectible = true;
         isDangerous = false;
     }

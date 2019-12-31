@@ -12,7 +12,7 @@ public class Enemy extends Creature {
         this.posy = posy+1;
         this.sizex = GameConstants.BLOCK_SIZE-2;
         this.sizey = GameConstants.BLOCK_SIZE-2;
-        this.animation = new Animation(new SpriteSheet("src\\enemy.png",64,64),50);
+        this.animation = new Animation(new SpriteSheet("src\\img\\enemy.png",64,64),50);
     }
 
     public void draw(float x, float y) {

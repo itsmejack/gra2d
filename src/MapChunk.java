@@ -15,8 +15,9 @@ class MapChunk {
 
     private int minPlatformLength;
     private int maxPlatformLength ;
+    private boolean generateEnemy;
 
-    MapChunk(boolean up, boolean down, boolean left, boolean right, float newX, float newY, boolean isFinish, int minPlatform, int maxPlatform) throws SlickException {
+    MapChunk(boolean up, boolean down, boolean left, boolean right, float newX, float newY, boolean isFinish, int minPlatform, int maxPlatform, boolean generateEnemy) throws SlickException {
         upExit = up;
         downExit = down;
         leftExit = left;
@@ -25,11 +26,12 @@ class MapChunk {
         startY = newY;
         minPlatformLength = minPlatform;
         maxPlatformLength = maxPlatform;
+        this.generateEnemy = generateEnemy;
         gameObjects = isFinish ? generateFinishChunk() : generateNewChunk();
     }
 
     MapChunk(float newX, float newY, boolean isFinish, int minPlatform, int maxPlatform) throws SlickException {
-        this(true, true, true, true, newX, newY, isFinish, minPlatform, maxPlatform);
+        this(true, true, true, true, newX, newY, isFinish, minPlatform, maxPlatform, false);
     }
 
     private List<GameObject> generateFinishChunk() throws SlickException {
@@ -87,8 +89,7 @@ class MapChunk {
         for (int currentX=minX; currentX<=maxX; currentX++) {
             if(generator.nextInt(10) < 1) {
                 temp.add(new MapItem(startX+currentX*GameConstants.BLOCK_SIZE, startY+(newY-1)*GameConstants.BLOCK_SIZE));
-            }
-            if(generator.nextInt(100) < 1) {
+            } else if(generator.nextInt(200) < 1 && generateEnemy) {
                 temp.add(new Enemy(startX+currentX*GameConstants.BLOCK_SIZE, startY+(newY-1)*GameConstants.BLOCK_SIZE));
             }
             temp.add(new MapBlock(startX+currentX*GameConstants.BLOCK_SIZE, startY+newY*GameConstants.BLOCK_SIZE));

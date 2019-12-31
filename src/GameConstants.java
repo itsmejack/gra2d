@@ -1,5 +1,11 @@
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public final class GameConstants {
 
@@ -35,6 +41,6 @@ public final class GameConstants {
     static int MAX_PLATFORM_LENGTH_MEDIUM = 5;
     static int MAX_PLATFORM_LENGTH_HARD = 2;
 
-    static Color MAIN_BACKGROUND_COLOR = new Color(145,40,153);
+    static Color MAIN_BACKGROUND_COLOR = new Color(105,30,233);
 
 }

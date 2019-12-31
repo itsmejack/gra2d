@@ -7,13 +7,7 @@ import org.newdawn.slick.*;
 public class SimpleSlickGame extends BasicGame
 {
     //TODO
-    //zmiana wielkosci mapy/poziomu -> retry
-    //pulapki zrobic mniejsze
     //tekstury dokończyc
-    //fatal na teksturach
-    //coiny ktorych nie da sie zebrac na retry
-    //nachodzace coiny i pulapki
-    //zmniejszyc ilosc pulapek
 
     private SimpleSlickGame(String gamename) {
         super(gamename);
@@ -22,7 +16,7 @@ public class SimpleSlickGame extends BasicGame
     Player player;
     Map map;
     int timer = 0;
-
+    MapSize prevSize;
     float maxSpeed = 15f;
     int mapSizeX ;
     int mapSizeY ;

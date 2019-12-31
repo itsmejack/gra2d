@@ -121,17 +121,22 @@ public class MenuState extends ApplicationState{
     }
 
     private void prepareGame(boolean isNewGame) throws SlickException {
-        game.mapSizeX = mapSize.mapSizeX;
-        game.mapSizeY = mapSize.mapSizeY;
+
         game.player = Player.getInstance();
         if(isNewGame) {
+            game.mapSizeX = mapSize.mapSizeX;
+            game.mapSizeY = mapSize.mapSizeY;
             game.map = new Map();
             game.startPosY = game.map.generateMap(mapSize.mapSizeX, mapSize.mapSizeY, difficulty.minPlatformLength, difficulty.maxPlatformLength);
+            game.prevSize = mapSize;
         }
         game.player.posx = GameConstants.BLOCK_SIZE*5/2;
         game.player.posy = game.startPosY;
         game.map.isFinished = false;
-        game.timer = mapSize.maxTime;
+        game.map.isHit = false;
+        game.map.collectedCoins = 0;
+        game.map.getFragments().stream().filter(e -> e instanceof MapItem).forEach(e -> e.isCollected = false);
+        game.timer = game.prevSize.maxTime;
         game.changeState(new GameState(game));
 
     }

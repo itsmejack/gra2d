@@ -161,9 +161,9 @@ public class GameState extends ApplicationState{
     private void drawBackground(float camerax, float cameray, Graphics g) throws SlickException {
         g.setBackground(new Color(145,40,153));
 
-        Image back2 = new Image("src\\bak2.png");
-        Image back3 = new Image("src\\bak3.png");
-        Image backg = new Image("src\\backg.png");
+        Image back2 = new Image("src\\img\\bak2.png");
+        Image back3 = new Image("src\\img\\bak3.png");
+        Image backg = new Image("src\\img\\backg.png");
 
         for(int i=0; i<10; i++) {
             backg.draw((-game.player.posx+camerax)/40+3840*i-1000, (-game.player.posy+cameray)/40-100);

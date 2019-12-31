@@ -199,7 +199,8 @@ public class Map {
                 currentY*64f*10,
                 false,
                 minPlatform,
-                maxPlatform);
+                maxPlatform,
+                true);
     }
 
     private MapChunk generateFinishChunk(int currentX, int currentY, int minPlatform, int maxPlatform) throws SlickException {
